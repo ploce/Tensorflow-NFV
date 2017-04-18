@@ -1,4 +1,5 @@
 #coding=utf-8
+import copy
 import numpy as np
 import tensorflow as tf
 
@@ -7,9 +8,9 @@ FILE_NAME = 'testdata'
 BATCH_SIZE = 100
 
 #输入维度
-INPUT_DIM_1 = 100
-INPUT_DIM_2 = 100
-INPUT_DIM = INPUT_DIM_1 * INPUT_DIM_2
+INPUT_DIM_1 = 24
+INPUT_DIM_2 = 24
+INPUT_DIM = INPUT_DIM_1 * INPUT_DIM_2 + 3 
 
 #输出维度
 OUTPUT_DIM = 1
@@ -59,10 +60,14 @@ def main(_):
     init = tf.initialize_all_variables()
     sess.run(init)
 
-    for i in range(1000):
-        batch_x, batch_y = process_input()
-        acc,_ = secc.run([accuracy, train_step], feed_dict={x : batch_x, y_: batch_y})
-        print("Accuracy at step %s : %s" % (i, acc))
+    with tf.name_scope('train'):
+        for i in range(1000):
+            batch_x, batch_y = process_input()
+            acc,_ = secc.run([accuracy, train_step], feed_dict={x : batch_x, y_: batch_y})
+            print("Accuracy at step %s : %s" % (i, acc))
 
-if __name__ == "main":
+    with tf.name_scope('test'):
+        '''测试训练结果'''
+
+if __name__ == "__main__":
     tf.app.run()
